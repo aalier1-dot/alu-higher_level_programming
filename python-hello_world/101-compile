@@ -1,6 +1,7 @@
-#!/usr/bin/python3
-import py_compile
-import os
-file = os.environ.get("PYFILE")
-print("Compiling {} ...".format(file))
-py_compile.compile(file, file + "c")
+#!/bin/bash
+python3 -c "
+import py_compile, os
+f = os.environ.get('PYFILE')
+print('Compiling {} ...'.format(f))
+py_compile.compile(f, f + 'c')
+"
