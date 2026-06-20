@@ -1,5 +1,2 @@
 #!/usr/bin/python3
-s = ""
-for i in range(26):
-    s += chr(ord('a') + i)
-print(s, end="")
+print("{}".format("".join([chr(ord('a') + i) for i in range(26)])), end="")
