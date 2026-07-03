@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-a = 10
-b = 89
+a = 1
+b = 2
 a, b = b, a
-print("a={} - b={}".format(b, a))
+print("a=" + str(a) + " - b=" + str(b))
