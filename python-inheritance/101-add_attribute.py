@@ -1,7 +1,10 @@
 #!/usr/bin/python3
 """Module that adds a new attribute to an object, if possible."""
+
+
 def add_attribute(obj, name, value):
     """Adds a new attribute to an object, raises TypeError if not possible.
+
     Args:
         obj: the object to add the attribute to.
         name: the name of the attribute.
