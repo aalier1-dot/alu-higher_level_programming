@@ -1,6 +1,77 @@
->>> lazy_matrix_mul = __import__("101-lazy_matrix_mul").lazy_matrix_mul
->>> lazy_matrix_mul([[1, 2], [3, 4]], [[1, 2], [3, 4]])
-array([[ 7, 10],
-       [15, 22]])
->>> lazy_matrix_mul([[1, 2]], [[3, 4], [5, 6]])
-array([[13, 16]])
+The ``101-lazy_matrix_mul`` module
+====================================
+
+Import the function:
+
+    >>> lazy_matrix_mul = __import__('101-lazy_matrix_mul').lazy_matrix_mul
+
+Basic multiplication of two square matrices:
+
+    >>> lazy_matrix_mul([[1, 2], [3, 4]], [[1, 2], [3, 4]])
+    array([[ 7, 10],
+           [15, 22]])
+
+Multiplication of non-square compatible matrices:
+
+    >>> lazy_matrix_mul([[1, 2]], [[3, 4], [5, 6]])
+    array([[13, 16]])
+
+m_a as a string raises an error:
+
+    >>> try:
+    ...     lazy_matrix_mul("Holberton", [[5, 6], [7, 8]])
+    ... except (TypeError, ValueError):
+    ...     print("raised")
+    raised
+
+m_a as a flat list (not a list of lists) raises ValueError:
+
+    >>> try:
+    ...     lazy_matrix_mul([1, 2, 3, 4], [[5, 6], [7, 8]])
+    ... except Exception as e:
+    ...     print(type(e).__name__)
+    ValueError
+
+m_b as a flat list (not a list of lists) raises ValueError:
+
+    >>> try:
+    ...     lazy_matrix_mul([[5, 6], [7, 8]], [1, 2, 3, 4])
+    ... except Exception as e:
+    ...     print(type(e).__name__)
+    ValueError
+
+An empty matrix raises ValueError:
+
+    >>> try:
+    ...     lazy_matrix_mul([[]], [[5, 6], [7, 8]])
+    ... except Exception as e:
+    ...     print(type(e).__name__)
+    ValueError
+
+Matrices with incompatible shapes raise ValueError:
+
+    >>> try:
+    ...     lazy_matrix_mul([[1, 2, 3], [3, 4, 5]], [[1, 2], [3, 4]])
+    ... except Exception as e:
+    ...     print(type(e).__name__)
+    ValueError
+
+Matrices that are not rectangular raise ValueError:
+
+    >>> try:
+    ...     lazy_matrix_mul([[5, 6, 10], [7, 8]], [[5, 6], [7, 8]])
+    ... except Exception as e:
+    ...     print(type(e).__name__)
+    ValueError
+
+Missing one argument:
+
+    >>> lazy_matrix_mul([[1, 2], [3, 4]])
+    Traceback (most recent call last):
+    TypeError: lazy_matrix_mul() missing 1 required positional argument: 'm_b'
+
+Missing two arguments:
+
+    >>> lazy_matrix_mul()
+    Traceback (most recent call last):
+    TypeError: lazy_matrix_mul() missing 2 required positional arguments: 'm_a' and 'm_b'
