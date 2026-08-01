@@ -1,7 +1,47 @@
->>> text_indentation = __import__("5-text_indentation").text_indentation
->>> text_indentation("Hello.")
-Hello.
+The ``5-text_indentation`` module
+===================================
 
->>> text_indentation(123)
-Traceback (most recent call last):
-TypeError: text must be a string
+Import the function:
+
+    >>> text_indentation = __import__('5-text_indentation').text_indentation
+
+Basic sentence with a period:
+
+    >>> text_indentation("Hello. How are you? Fine: thanks.")
+    Hello.
+    <BLANKLINE>
+    How are you?
+    <BLANKLINE>
+    Fine:
+    <BLANKLINE>
+    thanks.
+    <BLANKLINE>
+
+Text with no delimiter is printed as is:
+
+    >>> text_indentation("Hello world")
+    Hello world
+
+Empty string prints nothing:
+
+    >>> text_indentation("")
+
+text must be a string:
+
+    >>> text_indentation(89)
+    Traceback (most recent call last):
+    TypeError: text must be a string
+
+    >>> text_indentation([1, 2, 3])
+    Traceback (most recent call last):
+    TypeError: text must be a string
+
+    >>> text_indentation(None)
+    Traceback (most recent call last):
+    TypeError: text must be a string
+
+Missing argument:
+
+    >>> text_indentation()
+    Traceback (most recent call last):
+    TypeError: text_indentation() missing 1 required positional argument: 'text'
