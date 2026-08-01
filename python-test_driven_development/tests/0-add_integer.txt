@@ -1,1 +1,52 @@
-The ``0-add_integer`` module=============================Import the function:    >>> add_integer = __import__('0-add_integer').add_integerBasic addition:    >>> add_integer(1, 2)    3    >>> add_integer(100, -2)    98Default value of b:    >>> add_integer(2)    100Float arguments are casted to int before adding:    >>> add_integer(100.3, -2)    98    >>> add_integer(2, 100.3)    102    >>> add_integer(-1.5, -1.5)    -2Errors are raised for non int/float arguments:    >>> add_integer(4, "School")    Traceback (most recent call last):    TypeError: b must be an integer    >>> add_integer(None)    Traceback (most recent call last):    TypeError: a must be an integerFloat overflow:    >>> add_integer(float("inf"), 2)    Traceback (most recent call last):    OverflowError: cannot convert float infinity to integerCannot convert float NaN to integer:    >>> add_integer(float("nan"), 2)    Traceback (most recent call last):    ValueError: cannot convert float NaN to integer
+The ``0-add_integer`` module
+=============================
+
+Import the function:
+
+    >>> add_integer = __import__('0-add_integer').add_integer
+
+Basic addition:
+
+    >>> add_integer(1, 2)
+    3
+
+    >>> add_integer(100, -2)
+    98
+
+Default value of b:
+
+    >>> add_integer(2)
+    100
+
+Float arguments are casted to int before adding:
+
+    >>> add_integer(100.3, -2)
+    98
+
+    >>> add_integer(2, 100.3)
+    102
+
+    >>> add_integer(-1.5, -1.5)
+    -2
+
+Errors are raised for non int/float arguments:
+
+    >>> add_integer(4, "School")
+    Traceback (most recent call last):
+    TypeError: b must be an integer
+
+    >>> add_integer(None)
+    Traceback (most recent call last):
+    TypeError: a must be an integer
+
+Float overflow:
+
+    >>> add_integer(float("inf"), 2)
+    Traceback (most recent call last):
+    OverflowError: cannot convert float infinity to integer
+
+Cannot convert float NaN to integer:
+
+    >>> add_integer(float("nan"), 2)
+    Traceback (most recent call last):
+    ValueError: cannot convert float NaN to integer
