@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """Fetches https://alu-intranet.hbtn.io/status and displays the body."""
 import urllib.request
 if __name__ == "__main__":
