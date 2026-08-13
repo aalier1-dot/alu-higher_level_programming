@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """Defines the Base model class."""
+import csv
 
 
 class Base:
@@ -25,3 +26,38 @@ class Base:
         else:
             Base.__nb_objects += 1
             self.id = Base.__nb_objects
+
+    @classmethod
+    def save_to_file_csv(cls, list_objs):
+        """Serializes list_objs to CSV file <Class name>.csv"""
+        filename = cls.__name__ + ".csv"
+        with open(filename, "w", newline="") as f:
+            if cls.__name__ == "Rectangle":
+                fields = ["id", "width", "height", "x", "y"]
+            else:
+                fields = ["id", "size", "x", "y"]
+            writer = csv.writer(f)
+            if list_objs is None:
+                list_objs = []
+            for obj in list_objs:
+                d = obj.to_dictionary()
+                writer.writerow([d[field] for field in fields])
+
+    @classmethod
+    def load_from_file_csv(cls):
+        """Deserializes list of instances from <Class name>.csv"""
+        filename = cls.__name__ + ".csv"
+        try:
+            with open(filename, "r", newline="") as f:
+                if cls.__name__ == "Rectangle":
+                    fields = ["id", "width", "height", "x", "y"]
+                else:
+                    fields = ["id", "size", "x", "y"]
+                reader = csv.reader(f)
+                list_dicts = [
+                    {field: int(val) for field, val in zip(fields, row)}
+                    for row in reader
+                ]
+                return [cls(**d) for d in list_dicts]
+        except FileNotFoundError:
+            return []
