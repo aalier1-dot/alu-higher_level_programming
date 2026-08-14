@@ -58,6 +58,22 @@ class TestSquare(unittest.TestCase):
         with self.assertRaises(ValueError):
             Square(-3)
 
+    def test_x_type_error(self):
+        with self.assertRaises(TypeError):
+            Square(1, "2")
+
+    def test_x_value_error(self):
+        with self.assertRaises(ValueError):
+            Square(1, -2)
+
+    def test_y_type_error(self):
+        with self.assertRaises(TypeError):
+            Square(1, 2, "3")
+
+    def test_y_value_error(self):
+        with self.assertRaises(ValueError):
+            Square(1, 2, -3)
+
     def test_str(self):
         s = Square(5, 1, 2, 3)
         self.assertEqual(str(s), "[Square] (3) 1/2 - 5")
