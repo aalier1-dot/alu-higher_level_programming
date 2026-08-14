@@ -30,6 +30,10 @@ class TestRectangle(unittest.TestCase):
         with self.assertRaises(ValueError):
             Rectangle(0, 2)
 
+    def test_width_negative(self):
+        with self.assertRaises(ValueError):
+            Rectangle(-1, 2)
+
     def test_height_type_error(self):
         with self.assertRaises(TypeError):
             Rectangle(2, "a")
@@ -37,6 +41,10 @@ class TestRectangle(unittest.TestCase):
     def test_height_value_error(self):
         with self.assertRaises(ValueError):
             Rectangle(2, 0)
+
+    def test_height_negative(self):
+        with self.assertRaises(ValueError):
+            Rectangle(1, -2)
 
     def test_x_type_error(self):
         with self.assertRaises(TypeError):
@@ -46,6 +54,10 @@ class TestRectangle(unittest.TestCase):
         with self.assertRaises(ValueError):
             Rectangle(2, 2, -1)
 
+    def test_x_negative(self):
+        with self.assertRaises(ValueError):
+            Rectangle(1, 2, -3)
+
     def test_y_type_error(self):
         with self.assertRaises(TypeError):
             Rectangle(2, 2, 0, "a")
@@ -53,6 +65,10 @@ class TestRectangle(unittest.TestCase):
     def test_y_value_error(self):
         with self.assertRaises(ValueError):
             Rectangle(2, 2, 0, -1)
+
+    def test_y_negative(self):
+        with self.assertRaises(ValueError):
+            Rectangle(1, 2, 3, -4)
 
     def test_area(self):
         self.assertEqual(Rectangle(3, 2).area(), 6)
