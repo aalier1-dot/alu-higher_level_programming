@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """Defines the Base model class."""
 import csv
+import json
 
 
 class Base:
@@ -69,3 +70,38 @@ class Base:
             dummy = cls(1)
         dummy.update(**dictionary)
         return dummy
+
+    @staticmethod
+    def to_json_string(list_dictionaries):
+        """Returns the JSON string representation of list_dictionaries."""
+        if list_dictionaries is None or len(list_dictionaries) == 0:
+            return "[]"
+        return json.dumps(list_dictionaries)
+
+    @staticmethod
+    def from_json_string(json_string):
+        """Returns a list of dictionaries from a JSON string."""
+        if json_string is None or len(json_string) == 0:
+            return []
+        return json.loads(json_string)
+
+    @classmethod
+    def save_to_file(cls, list_objs):
+        """Saves list_objs to <Class name>.json as JSON."""
+        filename = cls.__name__ + ".json"
+        if list_objs is None:
+            list_objs = []
+        list_dicts = [obj.to_dictionary() for obj in list_objs]
+        with open(filename, "w") as f:
+            f.write(cls.to_json_string(list_dicts))
+
+    @classmethod
+    def load_from_file(cls):
+        """Returns a list of instances loaded from <Class name>.json."""
+        filename = cls.__name__ + ".json"
+        try:
+            with open(filename, "r") as f:
+                list_dicts = cls.from_json_string(f.read())
+                return [cls.create(**d) for d in list_dicts]
+        except FileNotFoundError:
+            return []

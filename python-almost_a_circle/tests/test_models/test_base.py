@@ -112,6 +112,101 @@ class TestBase(unittest.TestCase):
         self.assertEqual(result[1].to_dictionary(), s2.to_dictionary())
         os.remove("Square.csv")
 
+    def test_to_json_string_none(self):
+        """to_json_string(None) returns \"[]\"."""
+        self.assertEqual(Base.to_json_string(None), "[]")
+
+    def test_to_json_string_empty(self):
+        """to_json_string([]) returns \"[]\"."""
+        self.assertEqual(Base.to_json_string([]), "[]")
+
+    def test_to_json_string_list(self):
+        """to_json_string returns valid JSON for a list of dicts."""
+        result = Base.to_json_string([{"id": 12}])
+        self.assertEqual(result, "[{\"id\": 12}]")
+
+    def test_from_json_string_none(self):
+        """from_json_string(None) returns []."""
+        self.assertEqual(Base.from_json_string(None), [])
+
+    def test_from_json_string_empty(self):
+        """from_json_string(\"\") returns []."""
+        self.assertEqual(Base.from_json_string(""), [])
+
+    def test_from_json_string_valid(self):
+        """from_json_string parses back to the original list."""
+        result = Base.from_json_string("[{\"id\": 12}]")
+        self.assertEqual(result, [{"id": 12}])
+
+    def test_json_round_trip(self):
+        """to_json_string and from_json_string are inverses."""
+        original = [{"id": 1}, {"id": 2}]
+        s = Base.to_json_string(original)
+        self.assertEqual(Base.from_json_string(s), original)
+
+    def test_save_to_file_none(self):
+        """save_to_file(None) writes an empty-list JSON file."""
+        Rectangle.save_to_file(None)
+        with open("Rectangle.json", "r") as f:
+            content = f.read()
+        self.assertEqual(content, "[]")
+        os.remove("Rectangle.json")
+
+    def test_save_and_load_rectangle_json(self):
+        """Rectangle JSON round-trip preserves attributes."""
+        r1 = Rectangle(10, 7, 2, 8, 1)
+        r2 = Rectangle(2, 4, 0, 0, 2)
+        Rectangle.save_to_file([r1, r2])
+        result = Rectangle.load_from_file()
+        self.assertEqual(len(result), 2)
+        self.assertEqual(result[0].to_dictionary(), r1.to_dictionary())
+        self.assertEqual(result[1].to_dictionary(), r2.to_dictionary())
+        os.remove("Rectangle.json")
+
+    def test_load_from_file_no_file(self):
+        """load_from_file returns [] if the file is missing."""
+        if os.path.exists("Square.json"):
+            os.remove("Square.json")
+        result = Square.load_from_file()
+        self.assertEqual(result, [])
+
+    def test_create_partial_id(self):
+        """create with only id sets id, keeps default other attrs."""
+        r = Rectangle.create(**{"id": 89})
+        self.assertEqual(r.id, 89)
+
+    def test_create_partial_id_width(self):
+        """create with id and width sets both correctly."""
+        r = Rectangle.create(**{"id": 89, "width": 1})
+        self.assertEqual(r.id, 89)
+        self.assertEqual(r.width, 1)
+
+    def test_create_partial_id_width_height(self):
+        """create with id, width, height sets all three."""
+        r = Rectangle.create(**{"id": 89, "width": 1, "height": 2})
+        self.assertEqual(r.id, 89)
+        self.assertEqual(r.width, 1)
+        self.assertEqual(r.height, 2)
+
+    def test_create_partial_id_width_height_x(self):
+        """create with id, width, height, x sets all four."""
+        d = {"id": 89, "width": 1, "height": 2, "x": 3}
+        r = Rectangle.create(**d)
+        self.assertEqual(r.id, 89)
+        self.assertEqual(r.x, 3)
+
+    def test_create_full_rectangle(self):
+        """create with all attributes sets every field."""
+        d = {"id": 89, "width": 1, "height": 2, "x": 3, "y": 4}
+        r = Rectangle.create(**d)
+        self.assertEqual(r.to_dictionary(), d)
+
+    def test_create_square(self):
+        """create works for Square with size."""
+        s = Square.create(**{"id": 5, "size": 2})
+        self.assertEqual(s.id, 5)
+        self.assertEqual(s.size, 2)
+
 
 if __name__ == '__main__':
     unittest.main()
