@@ -9,13 +9,11 @@ class Base:
     Manages the private __nb_objects attribute, used to assign a
     unique id to every new instance if no id is given.
     """
-
     __nb_objects = 0
 
     def __init__(self, id=None):
         """
         Initializes a new Base instance.
-
         Args:
             id (int): the identity of the new instance. If None,
                 the id is set using the incremented value of
@@ -61,3 +59,13 @@ class Base:
                 return [cls(**d) for d in list_dicts]
         except FileNotFoundError:
             return []
+
+    @classmethod
+    def create(cls, **dictionary):
+        """Returns an instance with all attributes set from dictionary."""
+        if cls.__name__ == "Rectangle":
+            dummy = cls(1, 1)
+        else:
+            dummy = cls(1)
+        dummy.update(**dictionary)
+        return dummy

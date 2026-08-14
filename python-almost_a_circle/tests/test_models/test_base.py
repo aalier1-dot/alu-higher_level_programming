@@ -1,7 +1,10 @@
 #!/usr/bin/python3
 """Unit tests for the Base class."""
+import os
 import unittest
 from models.base import Base
+from models.rectangle import Rectangle
+from models.square import Square
 
 
 class TestBase(unittest.TestCase):
@@ -17,7 +20,7 @@ class TestBase(unittest.TestCase):
         self.assertEqual(b.id, 1)
 
     def test_id_increments(self):
-        """Each new instance without an id increments the counter."""
+        """Each new instance without an id increments counter."""
         b1 = Base()
         b2 = Base()
         b3 = Base()
@@ -43,7 +46,7 @@ class TestBase(unittest.TestCase):
         self.assertEqual(b.id, 1)
 
     def test_id_zero(self):
-        """An id of 0 is a valid explicit id (not treated as falsy)."""
+        """An id of 0 is a valid explicit id."""
         b = Base(0)
         self.assertEqual(b.id, 0)
 
@@ -53,16 +56,61 @@ class TestBase(unittest.TestCase):
         self.assertEqual(b.id, -5)
 
     def test_id_string(self):
-        """A string id is accepted as given (Base does not validate)."""
+        """A string id is accepted as given."""
         b = Base("hello")
         self.assertEqual(b.id, "hello")
 
     def test_no_args_instantiation(self):
-        """Base() with no arguments should not raise an error."""
+        """Base() with no arguments should not raise."""
         try:
             Base()
         except Exception as e:
             self.fail("Base() raised an exception: {}".format(e))
+
+    def test_save_to_file_csv_empty_list(self):
+        """save_to_file_csv with empty list creates empty file."""
+        Rectangle.save_to_file_csv([])
+        with open("Rectangle.csv", "r") as f:
+            content = f.read()
+        self.assertEqual(content, "")
+        os.remove("Rectangle.csv")
+
+    def test_save_to_file_csv_none(self):
+        """save_to_file_csv with None behaves like empty list."""
+        Rectangle.save_to_file_csv(None)
+        with open("Rectangle.csv", "r") as f:
+            content = f.read()
+        self.assertEqual(content, "")
+        os.remove("Rectangle.csv")
+
+    def test_load_from_file_csv_no_file(self):
+        """load_from_file_csv returns [] if file is missing."""
+        if os.path.exists("Square.csv"):
+            os.remove("Square.csv")
+        result = Square.load_from_file_csv()
+        self.assertEqual(result, [])
+
+    def test_save_and_load_rectangle_csv(self):
+        """Rectangle CSV round-trip preserves attributes."""
+        r1 = Rectangle(10, 7, 2, 8, 1)
+        r2 = Rectangle(2, 4, 0, 0, 2)
+        Rectangle.save_to_file_csv([r1, r2])
+        result = Rectangle.load_from_file_csv()
+        self.assertEqual(len(result), 2)
+        self.assertEqual(result[0].to_dictionary(), r1.to_dictionary())
+        self.assertEqual(result[1].to_dictionary(), r2.to_dictionary())
+        os.remove("Rectangle.csv")
+
+    def test_save_and_load_square_csv(self):
+        """Square CSV round-trip preserves attributes."""
+        s1 = Square(5, 0, 0, 5)
+        s2 = Square(7, 9, 1, 6)
+        Square.save_to_file_csv([s1, s2])
+        result = Square.load_from_file_csv()
+        self.assertEqual(len(result), 2)
+        self.assertEqual(result[0].to_dictionary(), s1.to_dictionary())
+        self.assertEqual(result[1].to_dictionary(), s2.to_dictionary())
+        os.remove("Square.csv")
 
 
 if __name__ == '__main__':
