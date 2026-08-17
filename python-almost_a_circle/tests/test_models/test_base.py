@@ -152,6 +152,14 @@ class TestBase(unittest.TestCase):
         self.assertEqual(content, "[]")
         os.remove("Rectangle.json")
 
+    def test_save_to_file_empty_list(self):
+        """save_to_file([]) writes an empty-list JSON file."""
+        Rectangle.save_to_file([])
+        with open("Rectangle.json", "r") as f:
+            content = f.read()
+        self.assertEqual(content, "[]")
+        os.remove("Rectangle.json")
+
     def test_save_and_load_rectangle_json(self):
         """Rectangle JSON round-trip preserves attributes."""
         r1 = Rectangle(10, 7, 2, 8, 1)
